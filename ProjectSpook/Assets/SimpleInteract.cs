@@ -35,6 +35,10 @@ public class SimpleInteract : MonoBehaviour
                 {
                     Debug.Log("Hit an object called: " + hit.transform.gameObject.name);
                 }
+                if (hit.transform.gameObject.tag == "Door")
+                {
+                    hit.transform.gameObject.GetComponent<Door>().openDoor();
+                }
                 ////if it the piano object
                 //if (hit.transform.gameObject == pianoObject)
                 //{
@@ -44,7 +48,7 @@ public class SimpleInteract : MonoBehaviour
                 //    pianoHUD.SetActive(true);
                 //    //disable the movement and shooting
                 //    simpleMovementReference.enabled = false;
-                  
+
                 //}     
             }
         }

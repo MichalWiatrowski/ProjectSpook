@@ -60,3 +60,9 @@ sysinfo.txt
 
 # Crashlytics generated file
 crashlytics-build.properties
+*.meta
+*.info
+*.bin
+*.log
+*.bakert
+ProjectSpook/Temp/UnityLockfile

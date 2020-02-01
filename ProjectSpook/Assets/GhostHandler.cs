@@ -10,9 +10,13 @@ public class GhostHandler : MonoBehaviour
     NavMeshAgent navMeshAgent;
     public bool exposed = false;
     public List<GameObject> gameObjects2;
+    GameObject front;
+    GameObject back;
     // Start is called before the first frame update
     void Start()
     {
+        front = transform.GetChild(0).gameObject;
+        back = transform.GetChild(1).gameObject;
         gameObjects2 = new List<GameObject>();
         navMeshAgent = GetComponent<NavMeshAgent>();
         navMeshAgent.SetDestination(objective1.transform.position);
@@ -21,8 +25,9 @@ public class GhostHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+       // transform.LookAt(Camera.main.transform.position, Vector3.up);
         //GetComponent<SpriteRenderer>().enabled = true;
-       
+
         if (navMeshAgent.pathStatus == NavMeshPathStatus.PathComplete)
         {
             navMeshAgent.SetDestination(objective2.transform.position);
@@ -35,11 +40,13 @@ public class GhostHandler : MonoBehaviour
     }
     public void HideGhost()
     {
-        GetComponent<SpriteRenderer>().enabled = false;
+        front.GetComponent<SpriteRenderer>().enabled = false;
+        back.GetComponent<SpriteRenderer>().enabled = false;
     }
     public void ShowGhost()
     {
-        GetComponent<SpriteRenderer>().enabled = true;
+        front.GetComponent<SpriteRenderer>().enabled = true;
+        back.GetComponent<SpriteRenderer>().enabled = true;
     }
     //private void OnTriggerEnter(Collider other)
     //{
