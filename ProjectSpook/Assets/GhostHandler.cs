@@ -12,27 +12,45 @@ public class GhostHandler : MonoBehaviour
     public List<GameObject> gameObjects2;
     GameObject front;
     GameObject back;
+    float timer = 0.0f;
+    public GameObject player;
+    float alpha = 1.0f;
+    public Material niceGhostFront;
+    public Material niceGhostBack;
+    public Material badGhostFront;
+    public Material badGhostBack;
     // Start is called before the first frame update
     void Start()
     {
         front = transform.GetChild(0).gameObject;
         back = transform.GetChild(1).gameObject;
+       // front.GetComponent<Renderer>().material = niceGhostFront;
+//back.GetComponent<Renderer>().material = niceGhostBack;
+        front.GetComponent<Renderer>().material = badGhostFront;
+        back.GetComponent<Renderer>().material = badGhostBack;
         gameObjects2 = new List<GameObject>();
         navMeshAgent = GetComponent<NavMeshAgent>();
-        navMeshAgent.SetDestination(objective1.transform.position);
+      
     }
 
     // Update is called once per frame
     void Update()
     {
-       // transform.LookAt(Camera.main.transform.position, Vector3.up);
+        //transform.LookAt(Camera.main.transform.position, Vector3.up);
         //GetComponent<SpriteRenderer>().enabled = true;
-
-        if (navMeshAgent.pathStatus == NavMeshPathStatus.PathComplete)
+        navMeshAgent.SetDestination(player.transform.position);
+        //if (navMeshAgent.pathStatus == NavMeshPathStatus.PathComplete)
+        //{
+        //    navMeshAgent.SetDestination(objective2.transform.position);
+        //}
+        timer += Time.deltaTime;
+        if (timer >= 0.25f)
         {
-            navMeshAgent.SetDestination(objective2.transform.position);
+            front.GetComponent<Renderer>().material.SetTextureScale("_MainTex", new Vector2(-front.GetComponent<Renderer>().material.mainTextureScale.x, 1));
+            back.GetComponent<Renderer>().material.SetTextureScale("_MainTex", new Vector2(-back.GetComponent<Renderer>().material.mainTextureScale.x, 1));
+            timer = 0.0f;
         }
-
+     
         if (gameObjects2.Count == 0)
             ShowGhost();
         else
@@ -40,13 +58,17 @@ public class GhostHandler : MonoBehaviour
     }
     public void HideGhost()
     {
-        front.GetComponent<SpriteRenderer>().enabled = false;
-        back.GetComponent<SpriteRenderer>().enabled = false;
+        alpha -= Time.deltaTime * 3.0f;
+        if (alpha <= 0.0f) alpha = 0.0f;
+        front.GetComponent<Renderer>().material.color = new Color(front.GetComponent<Renderer>().material.color.r, front.GetComponent<Renderer>().material.color.g, front.GetComponent<Renderer>().material.color.b, alpha);
+        back.GetComponent<Renderer>().material.color = new Color(back.GetComponent<Renderer>().material.color.r, back.GetComponent<Renderer>().material.color.g, back.GetComponent<Renderer>().material.color.b, alpha);
     }
     public void ShowGhost()
     {
-        front.GetComponent<SpriteRenderer>().enabled = true;
-        back.GetComponent<SpriteRenderer>().enabled = true;
+        alpha += Time.deltaTime * 3.0f;
+        if (alpha >= 1.0f) alpha = 1.0f;
+        front.GetComponent<Renderer>().material.color = new Color(front.GetComponent<Renderer>().material.color.r, front.GetComponent<Renderer>().material.color.g, front.GetComponent<Renderer>().material.color.b, alpha);
+        back.GetComponent<Renderer>().material.color = new Color(back.GetComponent<Renderer>().material.color.r, back.GetComponent<Renderer>().material.color.g, back.GetComponent<Renderer>().material.color.b, alpha);
     }
     //private void OnTriggerEnter(Collider other)
     //{

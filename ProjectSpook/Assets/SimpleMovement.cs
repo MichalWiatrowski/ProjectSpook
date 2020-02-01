@@ -74,10 +74,10 @@ public class SimpleMovement : MonoBehaviour
             {
                 ghost.GetComponent<GhostHandler>().gameObjects2.Remove(coneCollider);
             }
-           else if (coneCollider.activeSelf && !ghost.GetComponent<GhostHandler>().gameObjects2.Contains(coneCollider))
-            {
-                ghost.GetComponent<GhostHandler>().gameObjects2.Add(coneCollider);
-            }
+           //else if (coneCollider.activeSelf && !ghost.GetComponent<GhostHandler>().gameObjects2.Contains(coneCollider))
+           //{
+           //    ghost.GetComponent<GhostHandler>().gameObjects2.Add(coneCollider);
+           //}
            
         }
 
