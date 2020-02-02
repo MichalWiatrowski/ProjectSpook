@@ -7,6 +7,7 @@ public class LightFlicker : MonoBehaviour
     float m_flickerTimer = 0.0f;
     float m_flickerMaxTimer = 6.0f;
     bool m_flickering = false;
+    public bool enabled = false;
     Light m_spotlight;
     GameObject coneCollider;
     GameObject ghost;
@@ -26,45 +27,31 @@ public class LightFlicker : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //if the light is not flickering
-        if (!m_flickering)
+        if (enabled)
         {
-            //increment the flicker timer
-            m_flickerTimer += Time.deltaTime;
-
-            //if the flicker timer is greater or equal to the flicker time
-            if (m_flickerTimer >= m_flickerMaxTimer)
+            //if the light is not flickering
+            if (!m_flickering)
             {
-                //start flickering
-                m_flickering = true;
-                //Start a coroutine with the flicker ssound and light "animation"
-               StartCoroutine(PlaySoundAndFlickerLight());
+                //increment the flicker timer
+                m_flickerTimer += Time.deltaTime;
+
+                //if the flicker timer is greater or equal to the flicker time
+                if (m_flickerTimer >= m_flickerMaxTimer)
+                {
+                    //start flickering
+                    m_flickering = true;
+                    //Start a coroutine with the flicker ssound and light "animation"
+                    StartCoroutine(PlaySoundAndFlickerLight());
+                }
             }
         }
-
-        if (m_spotlight.intensity == 10)
-
+        else
         {
-            //RaycastHit[] hit;
-
-
-           
-            //hit = ConeCast.ConeCastAll(m_spotlight.transform.position, m_spotlight.spotAngle / ((m_spotlight.areaSize.x + m_spotlight.areaSize.y) * 4), m_spotlight.transform.forward, m_spotlight.range, m_spotlight.spotAngle);
-
-            ////Vector3 p1 = transform.position + characterController.center;
-
-            //if (hit.Length > 0)
-            //{
-            //    for (int i = 0; i < hit.Length; i++)
-            //    {
-            //        if (hit[i].collider.gameObject.tag == "Ghost")
-            //            hit[i].transform.GetComponent<GhostHandler>().HideGhost();
-            //        //do something with collider information
-            //        // Debug.Log(hit[i].collider.gameObject.name);
-            //    }
-            //}
-
+            m_spotlight.intensity = 0;
         }
+        
+
+   
 
     }
 
@@ -78,13 +65,13 @@ public class LightFlicker : MonoBehaviour
         m_spotlight.intensity = 0;
         showhideghost();
        yield return new WaitForSecondsRealtime(0.2f);
-        m_spotlight.intensity = 10;
+        m_spotlight.intensity = 2;
         showhideghost();
         yield return new WaitForSecondsRealtime(0.4f);
         m_spotlight.intensity = 0;
         showhideghost();
         yield return new WaitForSecondsRealtime(0.11f);
-        m_spotlight.intensity = 10;
+        m_spotlight.intensity = 2;
         showhideghost();
         //reset the valuess to default
         m_flickerTimer = 0.0f;
@@ -103,4 +90,10 @@ public class LightFlicker : MonoBehaviour
         //    ghost.GetComponent<GhostHandler>().gameObjects2.Add(coneCollider);
         //}
     }
+    public void enableDisableLight()
+    {
+        enabled = !enabled;
+        showhideghost();
+    }
+    
 }

@@ -8,12 +8,12 @@ public class Door : MonoBehaviour
     public float doorOpenAngle = 90.0f; //Set either positive or negative number to open the door inwards or outwards
     public float openSpeed = 2.0f; //Increasing this value will make the door open faster
 
-    bool open = false;
+    public bool open = false;
     bool enter = false;
 
     float defaultRotationAngle;
     float currentRotationAngle;
-    float openTime = 0;
+    public float openTime = 0;
 
     bool m_doorOpened = false;
     bool m_opening = false;
@@ -34,14 +34,20 @@ public class Door : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         if (openTime < 1)
         {
             openTime += Time.deltaTime * openSpeed;
         }
         hinge.transform.localEulerAngles = new Vector3(hinge.transform.localEulerAngles.x, Mathf.LerpAngle(currentRotationAngle, defaultRotationAngle + (open ? doorOpenAngle : 0), openTime), hinge.transform.localEulerAngles.z);
 
-        
-         
+
+        if (hinge.transform.localEulerAngles.y == defaultRotationAngle || hinge.transform.localEulerAngles.y == defaultRotationAngle + 90.0f)
+        {
+            m_opening = false;
+            
+
+        }
         
     }
 
@@ -49,15 +55,26 @@ public class Door : MonoBehaviour
     {
         if (!mainDoor)
         {
-            open = !open;
-            currentRotationAngle = hinge.transform.localEulerAngles.y;
-            openTime = 0;
+            if (!m_opening)
+            {
+                open = !open;
+                currentRotationAngle = hinge.transform.localEulerAngles.y;
+                openTime = 0.0f;
+                m_opening = true;
+            }
         }
         else
         {
             //win game
         }
-
     }
-   
+   IEnumerator openclosedoor()
+    {
+
+
+
+
+
+        yield return null;
+    }
 }
